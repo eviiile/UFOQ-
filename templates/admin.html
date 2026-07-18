@@ -88,6 +88,16 @@
         .status-pending { background: var(--warning-bg); color: var(--warning); }
         .status-approved { background: var(--success-bg); color: var(--success); }
         .status-rejected { background: var(--danger-bg); color: var(--danger); }
+        .model-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700;
+        }
+        .model-badge.rewriter { background: rgba(168,85,247,0.1); color: #a855f7; }
+        .model-badge.standard { background: var(--primary-dim); color: var(--primary-dark); }
+        .color-preview {
+            width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border);
+            display: inline-block; vertical-align: middle; margin-right: 6px;
+        }
     </style>
 </head>
 <body>
@@ -104,6 +114,7 @@
                 <button class="btn btn-primary" onclick="showTab('library')">المكتبة</button>
                 <button class="btn btn-primary" onclick="showTab('contributions')">المساهمات</button>
                 <button class="btn btn-primary" onclick="showTab('ads')">الإعلانات</button>
+                <button class="btn btn-primary" onclick="showTab('ai_models')">نماذج الذكاء</button>
                 <button class="btn btn-primary" onclick="showTab('settings')">إعدادات الموقع</button>
             </div>
 
@@ -245,6 +256,69 @@
                             </form>
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- AI Models -->
+            <div id="tab-ai_models" class="tab-content card">
+                <div class="section-title"><i class="bi bi-cpu"></i> إدارة نماذج الذكاء الاصطناعي</div>
+                <form method="POST" action="/admin/ai_model/add" style="margin-bottom:20px;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="form-grid">
+                        <div class="form-group"><label>اسم النموذج (العرضي)</label><input type="text" name="name" placeholder="مثال: GPT-4o" required></div>
+                        <div class="form-group"><label>معرف النموذج (API)</label><input type="text" name="model_id" placeholder="مثال: openai/gpt-4o" required></div>
+                        <div class="form-group"><label>المزود</label><input type="text" name="provider" placeholder="مثال: openai" required></div>
+                        <div class="form-group"><label>الأيقونة (Bootstrap)</label><input type="text" name="icon" value="bi-cpu"></div>
+                        <div class="form-group"><label>لون الخلفية</label><input type="text" name="color" value="rgba(14,165,233,0.08)"></div>
+                        <div class="form-group"><label>لون النص</label><input type="text" name="text_color" value="#0ea5e9"></div>
+                        <div class="form-group"><label>الترتيب</label><input type="number" name="sort_order" value="0"></div>
+                        <div class="form-group" style="grid-column:1/-1;"><label>الوصف (يظهر للمستخدم)</label><textarea name="description" rows="3" placeholder="اشرح مهمة هذا النموذج بالتفصيل..." required></textarea></div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="is_active" checked> نشط</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="is_rewriter"> نموذج إعادة صياغة (مثل Grok)</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:10px;"><i class="bi bi-plus-lg"></i> إضافة نموذج</button>
+                </form>
+
+                <div style="margin-top:24px;">
+                    {% for model in ai_models %}
+                    <div class="item-card">
+                        <div class="info">
+                            <div class="title">
+                                <i class="bi {{ model.icon }}" style="color:{{ model.text_color }}; margin-left:6px;"></i>
+                                {{ model.name }}
+                                <span class="model-badge {{ 'rewriter' if model.is_rewriter else 'standard' }}">
+                                    {{ 'إعادة صياغة' if model.is_rewriter else 'قياسي' }}
+                                </span>
+                                <span class="status-badge" style="background:{% if model.is_active %}var(--success-bg){% else %}var(--danger-bg){% endif %}; color:{% if model.is_active %}var(--success){% else %}var(--danger){% endif %};">
+                                    {{ 'نشط' if model.is_active else 'معطل' }}
+                                </span>
+                            </div>
+                            <div class="meta">
+                                <span class="color-preview" style="background:{{ model.color }};"></span>
+                                {{ model.model_id }} | {{ model.provider }} | ترتيب: {{ model.sort_order }}
+                            </div>
+                            <div style="margin-top:6px; font-size:0.8rem; color:var(--text-dim); background:#f1f5f9; padding:8px; border-radius:6px;">
+                                {{ model.description }}
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <form method="POST" action="/admin/ai_model/{{ model.id }}/toggle">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button type="submit" class="btn btn-warning"><i class="bi bi-toggle-on"></i></button>
+                            </form>
+                            <form method="POST" action="/admin/ai_model/{{ model.id }}/delete" onsubmit="return confirm('حذف النموذج {{ model.name }}؟')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p style="color:var(--text-faint); text-align:center; padding:20px;">لا توجد نماذج مضافة</p>
                     {% endfor %}
                 </div>
             </div>
