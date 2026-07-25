@@ -795,7 +795,13 @@ def admin_clear_all_errors():
 
 # ==================== Application Factory ====================
 def create_app():
-    app = Flask(__name__, template_folder='templates')
+    # ===== تحديد مسار المثيل لتجنب خطأ نظام الملفات على Vercel/Render =====
+    instance_path = None
+    if os.getenv('VERCEL') or os.getenv('RENDER'):
+        instance_path = os.path.join('/tmp', 'instance')
+        # التأكد من وجود المجلد (سيقوم Flask بإنشائه تلقائياً إذا لم يكن موجوداً)
+    
+    app = Flask(__name__, template_folder='templates', instance_path=instance_path)
     app.config.from_object(Config)
 
     # Initialize extensions
