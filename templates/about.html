@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حول UFOQ – مكتبة البرومبتات العربية</title>
+<meta name="description" content="تعرف على UFOQ، أكبر مكتبة عربية للبرومبتات الاحترافية للذكاء الاصطناعي. إحصائيات، خطوات، أسئلة شائعة، وتواصل.">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer" 
+      onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css';">
+<noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+</noscript>
+
+<!-- ===== Vercel Analytics (لجمع بيانات الأداء والزوار) ===== -->
+<script>
+  window.vercelAnalytics = { id: '{{ VERCELL_ANALYTICS_ID or 'YOUR_PROJECT_ID' }}' };
+</script>
+<script src="https://vercel.live/analytics.js" defer></script>
+<!-- ====================================================== -->
+
+</head>
+<body>
+
+<div class="top-float">
+  <div class="header-capsule">
+    <a href="https://t.me/Evile_Prompts" target="_blank" rel="noopener noreferrer" class="hc-brand">
+      UFOQ
+    </a>
+  </div>
+</div>
+
+<!-- مودال الأعمدة -->
+<div class="cols-modal-overlay" id="colsModal">
+  <div class="cols-modal-box">
+    <button class="cols-modal-close" onclick="closeColsModal()">✕</button>
+    <h2>📐 عدد البطاقات</h2>
+    <p>اختر عدد البطاقات في كل سطر. يتغير التخطيط تلقائياً حسب الشاشة.</p>
+    <div class="cols-scroll-wrapper">
+      <div class="cols-scroll" id="colsScroll">
+        <div class="cols-option" data-cols="1" onclick="setCols(1)">1<span class="label">عمود</span></div>
+        <div class="cols-option" data-cols="2" onclick="setCols(2)">2<span class="label">عمودان</span></div>
+        <div class="cols-option" data-cols="3" onclick="setCols(3)">3<span class="label">3 أعمدة</span></div>
+        <div class="cols-option active" data-cols="4" onclick="setCols(4)">4<span class="label">4 أعمدة</span></div>
+        <div class="cols-option" data-cols="5" onclick="setCols(5)">5<span class="label">5 أعمدة</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="about-container">
+  <div class="stats-hero">
+    <h1>حول UFOQ</h1>
+    <p>منصة عربية متخصصة في جمع ومشاركة البرومبتات الاحترافية لأدوات الذكاء الاصطناعي. نهدف إلى تمكين المبدعين العرب من الوصول إلى أفضل النصوص التوجيهية.</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">{{ prompt_count }}</div><div class="stat-label">برومبت</div></div>
+      <div class="stat-card"><div class="stat-num">{{ total_copies }}</div><div class="stat-label">نسخة</div></div>
+      <div class="stat-card"><div class="stat-num">{{ total_shares }}</div><div class="stat-label">مشاركة</div></div>
+      <div class="stat-card"><div class="stat-num">{{ user_count or 0 }}</div><div class="stat-label">مستخدم</div></div>
+    </div>
+  </div>
+
+  <!-- ===== إضافة إعلان بانر في صفحة حول ===== -->
+  {% if active_ad %}
+  <div class="ad-banner" style="margin:20px 0;">
+    <div class="ad-banner-content">
+      {% if active_ad.image_url %}
+      <img src="{{ active_ad.image_url }}" alt="{{ active_ad.title }}" class="ad-image" loading="lazy">
+      {% endif %}
+      <div class="ad-title">{{ active_ad.title }}</div>
+      <div class="ad-text">{{ active_ad.text }}</div>
+      <a href="{{ active_ad.button_link }}" class="ad-btn" target="_blank" rel="noopener noreferrer">{{ active_ad.button_text }}</a>
+    </div>
+  </div>
+  {% else %}
+  <div class="ad-banner" style="margin:20px 0;">
+    <div class="ad-banner-content">
+      <div class="ad-title">📢 أعلن في UFOQ</div>
+      <div class="ad-text">وصل إلى آلاف المبدعين في عالم الذكاء الاصطناعي</div>
+      <a href="/about" class="ad-btn">تواصل معنا</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="section-card">
+    <h2><i class="fas fa-play-circle"></i> كيف تستخدم UFOQ</h2>
+    <div class="steps-grid">
+      <div class="step-item"><div class="step-num">1</div><h4>تصفح المكتبة</h4><p>استخدم شريط التصنيفات أو البحث للعثور على البرومبت المناسب لاحتياجاتك.</p></div>
+      <div class="step-item"><div class="step-num">2</div><h4>اختر البطاقة</h4><p>مرر بين البطاقات واكتشف البرومبتات المتنوعة في مختلف المجالات.</p></div>
+      <div class="step-item"><div class="step-num">3</div><h4>انسخ أو شارك</h4><p>استخدم الأزرار أسفل البطاقة لنسخ البرومبت أو مشاركته مع الآخرين.</p></div>
+      <div class="step-item"><div class="step-num">4</div><h4>تفاعل</h4><p>أعجب بالبرومبتات المفضلة لديك وساعد في نشر الإبداع.</p></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><i class="fas fa-question-circle"></i> الأسئلة الشائعة</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)"><h4>ما هو UFOQ؟</h4><i class="fas fa-chevron-down faq-icon"></i></div>
+        <div class="faq-answer"><p>UFOQ هي مكتبة عربية مفتوحة للبرومبتات – النصوص التوجيهية المستخدمة مع أدوات الذكاء الاصطناعي مثل ChatGPT و Midjourney و Claude وغيرها.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)"><h4>هل الاستخدام مجاني؟</h4><i class="fas fa-chevron-down faq-icon"></i></div>
+        <div class="faq-answer"><p>نعم، تصفح ونسخ البرومبتات مجاني بالكامل. لا توجد أي رسوم أو اشتراكات مدفوعة. مهمتنا نشر الإبداع للجميع.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)"><h4>كيف يمكنني المساهمة؟</h4><i class="fas fa-chevron-down faq-icon"></i></div>
+        <div class="faq-answer"><p>يمكنك التواصل معنا عبر قنوات التواصل أدناه لإرسال برومبتاتك الخاصة. سيتم مراجعتها وإضافتها إلى المكتبة مع الإشارة إليك.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)"><h4>ما هي أدوات الذكاء الاصطناعي المدعومة؟</h4><i class="fas fa-chevron-down faq-icon"></i></div>
+        <div class="faq-answer"><p>البرومبتات تعمل مع معظم أدوات الذكاء الاصطناعي الشائعة: ChatGPT، Midjourney، DALL-E، Stable Diffusion، Claude، Gemini، Bing Image Creator، وغيرها.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)"><h4>كيف يتم التحقق من جودة البرومبتات؟</h4><i class="fas fa-chevron-down faq-icon"></i></div>
+        <div class="faq-answer"><p>يتم مراجعة جميع البرومبتات قبل النشر للتأكد من جودتها، وخلوها من المحتوى غير المناسب، وفائدتها العملية للمستخدمين.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><i class="fas fa-envelope"></i> تواصل معنا</h2>
+    <p style="color:var(--text-secondary);font-size:var(--font-size-md);margin-bottom:var(--space-md);">تابع أحدث التحديثات، أو تواصل مع فريق التطوير:</p>
+    <div class="contact-grid">
+      <a href="https://t.me/Evile_Prompts" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <span class="contact-icon"><i class="fab fa-telegram"></i></span>
+        <div class="contact-info">
+          <span class="contact-label">قناة التحديثات</span>
+          <span class="contact-desc">@Evile_Prompts</span>
+        </div>
+      </a>
+      <a href="https://t.me/OlIiIl7" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <span class="contact-icon"><i class="fas fa-user-astronaut"></i></span>
+        <div class="contact-info">
+          <span class="contact-label">المطور</span>
+          <span class="contact-desc">@OlIiIl7</span>
+        </div>
+      </a>
+      <a href="https://instagram.com/ufoq7" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <span class="contact-icon"><i class="fab fa-instagram"></i></span>
+        <div class="contact-info">
+          <span class="contact-label">إنستغرام</span>
+          <span class="contact-desc">@ufoq7</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2><i class="fas fa-heart"></i> من نحن</h2>
+    <p>UFOQ هو مشروع عربي مستقل يهدف إلى بناء أكبر مكتبة عربية للبرومبتات. نؤمن بأن الذكاء الاصطناعي يجب أن يكون متاحاً للجميع، والبرومبت الجيد هو مفتاح الحصول على نتائج احترافية وإبداعية.</p>
+    <p>انضم إلى مجتمعنا وساهم في بناء مستقبل الإبداع الرقمي. معاً نصنع محتوى عربياً مميزاً يليق بجيل الذكاء الاصطناعي.</p>
+  </div>
+</div>
+
+<!-- ===== شريط التنقل السفلي + زر الأعمدة (منفصل) ===== -->
+<div class="bottom-nav-wrapper">
+  <div class="bottom-nav-main">
+    <a href="/" class="bn-item" aria-label="الرئيسية">
+      <i class="fas fa-home"></i>
+    </a>
+    <a href="/about" class="bn-item active" aria-label="حول">
+      <i class="fas fa-info-circle"></i>
+    </a>
+    <button class="bn-search" style="opacity:0; pointer-events:none;" aria-hidden="true">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+  <button class="bn-cols" onclick="openColsModal()" aria-label="تغيير عدد الأعمدة">
+    <i class="fas fa-grip-lines"></i>
+  </button>
+</div>
+
+<div class="toast" id="toast">تم!</div>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<script>
+function openColsModal() {
+  document.getElementById('colsModal').classList.add('open');
+  const selected = parseInt(localStorage.getItem('cardsPerRow') || '4', 10);
+  document.querySelectorAll('#colsScroll .cols-option').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.cols) === selected);
+  });
+}
+function closeColsModal() {
+  document.getElementById('colsModal').classList.remove('open');
+}
+function setCols(n) {
+  localStorage.setItem('cardsPerRow', n);
+  document.querySelectorAll('#colsScroll .cols-option').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.cols) === n);
+  });
+  setTimeout(closeColsModal, 300);
+  if (typeof applyCardsPerRow === 'function') applyCardsPerRow();
+}
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+let lastScroll = 0;
+window.addEventListener('scroll', function() {
+  const y = window.scrollY, nav = document.querySelector('.bottom-nav-wrapper');
+  if (nav) {
+    if (y > lastScroll && y > 140) nav.style.transform = 'translateX(-50%) translateY(120%)';
+    else nav.style.transform = 'translateX(-50%) translateY(0)';
+  }
+  lastScroll = y;
+  const st = document.getElementById('scrollTopBtn');
+  if (st) st.classList.toggle('show', y > 400);
+});
+document.addEventListener('DOMContentLoaded', function() {
+  const savedCols = localStorage.getItem('cardsPerRow') || '4';
+  document.querySelectorAll('#colsScroll .cols-option').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.cols) === parseInt(savedCols));
+  });
+});
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('colsModal');
+  const box = modal.querySelector('.cols-modal-box');
+  if (modal.classList.contains('open') && !box.contains(e.target) && !e.target.closest('.bn-cols')) {
+    closeColsModal();
+  }
+});
+</script>
+</body>
+</html>
