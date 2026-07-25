@@ -795,12 +795,22 @@ def admin_clear_all_errors():
 
 # ==================== Application Factory ====================
 def create_app():
-    # ===== تحديد مسار المثيل لتجنب خطأ نظام الملفات على Vercel/Render =====
+    # ===== تحديد مسار المثيل لتجنب خطأ نظام الملفات للقراءة فقط على Vercel/Render =====
     instance_path = None
     if os.getenv('VERCEL') or os.getenv('RENDER'):
         instance_path = os.path.join('/tmp', 'instance')
-        # التأكد من وجود المجلد (سيقوم Flask بإنشائه تلقائياً إذا لم يكن موجوداً)
-    
+        # إنشاء المجلد يدوياً قبل تهيئة Flask (للتأكد من وجوده)
+        try:
+            os.makedirs(instance_path, exist_ok=True)
+            logger.info(f"Created instance directory: {instance_path}")
+        except OSError as e:
+            logger.error(f"Failed to create instance directory {instance_path}: {e}")
+            # قد نرغب في استخدام مسار آخر كاحتياطي، لكننا سنستمر.
+    else:
+        # في بيئة التطوير المحلية، استخدم المسار الافتراضي
+        instance_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+        os.makedirs(instance_path, exist_ok=True)
+
     app = Flask(__name__, template_folder='templates', instance_path=instance_path)
     app.config.from_object(Config)
 
